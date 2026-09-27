@@ -1,0 +1,19 @@
+networks:
+  default: studionet
+
+  studionet:
+    accounts:
+      - "0xf6e536098748e4d4884c30b588136835ff7b6d6ed0e71dc1dc92753d27b94b26"
+      - "0x493934b427974adfcf5095bd7c62becbf18880b963ec3a85e60ec30706c30533"
+    chain_type: studionet
+
+  localnet:
+    url: "http://127.0.0.1:4000/api"
+    accounts:
+      - "0x023d076ab40ea46c59ac7ca7cecfaa2db5fa10b7a481aef27cf68e9cc5a8c0af"
+      - "0xf6e536098748e4d4884c30b588136835ff7b6d6ed0e71dc1dc92753d27b94b26"
+    chain_type: localnet
+
+paths:
+  contracts: "contracts"
+  artifacts: "artifacts"
