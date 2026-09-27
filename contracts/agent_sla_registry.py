@@ -71,7 +71,7 @@ class AgentSLARegistry(gl.Contract):
 
     # ---------- agent registration ----------
 
-    @gl.public.write
+    @gl.public.write.payable
     def registerAgent(self, capabilities: str) -> None:
         """Register as an agent with declared capabilities. Requires 1 GEN stake."""
         sender = gl.message.sender_address.as_hex
@@ -91,7 +91,7 @@ class AgentSLARegistry(gl.Contract):
         rec.capabilities = capabilities
         self.agents[sender] = rec
 
-    @gl.public.write
+    @gl.public.write.payable
     def addStake(self, capabilities: str) -> None:
         """Add more stake to an existing registration (also updates capabilities)."""
         sender = gl.message.sender_address.as_hex
@@ -130,8 +130,6 @@ class AgentSLARegistry(gl.Contract):
             raise gl.vm.UserError(f"SLA {sla_id} already exists")
         if not evidence_url.startswith("http"):
             raise gl.vm.UserError("evidence_url must be http(s)")
-        if self.used_evidence.get(evidence_url, "") == "1":
-            raise gl.vm.UserError(f"Evidence URL {evidence_url} already used")
         if int(window_end) <= _now():
             raise gl.vm.UserError("window_end must be in the future")
         self.slas[sla_id] = SLA(

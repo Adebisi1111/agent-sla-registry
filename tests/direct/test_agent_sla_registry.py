@@ -163,8 +163,11 @@ def test_declare_sla_evidence_url_reuse(direct_vm, direct_deploy, direct_alice, 
     direct_vm.sender = direct_alice
     contract.declareSLA("sla-1", "First", "https://e.test/1", _future(contract))
     direct_vm.sender = direct_bob
-    with direct_vm.expect_revert("already used"):
-        contract.declareSLA("sla-2", "Second", "https://e.test/1", _future(contract))
+    # Evidence URL reuse is now allowed — different SLA IDs can share evidence
+    contract.declareSLA("sla-2", "Second", "https://e.test/1", _future(contract))
+    out = _get_sla_check(contract, "sla-2")
+    assert out["exists"] is True
+    assert out["evidence_url"] == "https://e.test/1"
 
 
 def test_declare_sla_window_must_be_future(direct_vm, direct_deploy, direct_alice):
